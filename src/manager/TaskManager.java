@@ -58,13 +58,12 @@ public class TaskManager {
 
 
     //Обновление статуса эпика
-    public void updateEpicStatus(Epic epic) {
+    private void updateEpicStatus(Epic epic) {
         List<Subtask> subtaskList = epic.getSubtasksList();
 
         int subtasksAmmount = 0;
         int statusNew = 0;
         int statusDone = 0;
-        int statusInProgress = 0;
 
         for (Subtask subtask : subtaskList) {
             subtasksAmmount++;
@@ -73,8 +72,6 @@ public class TaskManager {
                 statusNew++;
             } else if (subtask.getStatus() == Status.DONE) {
                 statusDone++;
-            } else if (subtask.getStatus() == Status.IN_PROGRESS) {
-                statusInProgress++;
             }
         }
         if (subtasksAmmount == statusNew) {

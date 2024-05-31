@@ -3,19 +3,19 @@ package task;
 public class Task {
     private Integer id;
     private String name;
-    private String descriprion;
+    private String description;
     private Status status;
 
-    public Task(String name, String descriprion, Status status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
-        this.descriprion = descriprion;
+        this.description = description;
         this.status = status;
     }
 
-    public Task(Integer id, String name, String descriprion, Status status) {
+    public Task(Integer id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
-        this.descriprion = descriprion;
+        this.description = description;
         this.status = status;
     }
 
@@ -35,12 +35,12 @@ public class Task {
         this.name = name;
     }
 
-    public String getDescriprion() {
-        return descriprion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriprion(String descriprion) {
-        this.descriprion = descriprion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Status getStatus() {
@@ -56,7 +56,7 @@ public class Task {
         return "Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", descriprion='" + descriprion + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
     }

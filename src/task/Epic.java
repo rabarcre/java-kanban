@@ -6,22 +6,22 @@ import java.util.List;
 public class Epic extends Task {
     private List<Subtask> subtasksList = new ArrayList<>();
 
-    public Epic(String name, String descriprion, Status status) {
-        super(name, descriprion, status);
+    public Epic(String name, String description, Status status) {
+        super(name, description, status);
     }
 
-    public Epic(String name, String descriprion, Status status, List<Subtask> subtasksList) {
-        super(name, descriprion, status);
+    public Epic(String name, String description, Status status, List<Subtask> subtasksList) {
+        super(name, description, status);
         this.subtasksList = subtasksList;
     }
 
-    public Epic(Integer id, String name, String descriprion, Status status, List<Subtask> subtasksList) {
-        super(id, name, descriprion, status);
+    public Epic(Integer id, String name, String description, Status status, List<Subtask> subtasksList) {
+        super(id, name, description, status);
         this.subtasksList = subtasksList;
     }
 
-    public Epic(Integer id, String name, String descriprion, Status status) {
-        super(id, name, descriprion, status);
+    public Epic(Integer id, String name, String description, Status status) {
+        super(id, name, description, status);
     }
 
     public void addSubtask(Subtask subtask){
@@ -41,7 +41,7 @@ public class Epic extends Task {
         return "Epic{"+
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
-                ", descriprion='" + getDescriprion() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() + '\'' +
                 ", subtasksList=" + subtasksList +
                 '}';
