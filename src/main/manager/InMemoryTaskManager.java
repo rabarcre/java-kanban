@@ -1,16 +1,16 @@
-package manager;
+package main.manager;
 
-import task.Epic;
-import task.Status;
-import task.Subtask;
-import task.Task;
+import main.task.Epic;
+import main.task.Status;
+import main.task.Subtask;
+import main.task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManager {
 
     private int nextTaskId;
     private int nextEpicId;
@@ -20,34 +20,68 @@ public class TaskManager {
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
 
 
+    HistoryManager historyManager = Managers.getDefaultHistory();
+
+    @Override
+    public List<Task> getHistory(){
+        return historyManager.getHistory();
+    }
+
+
     // Получение значений задач
+    @Override
     public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
-    public List<Subtask> getSub() {
+    @Override
+    public List<Subtask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
 
+    // Просмотр отдельных задач
+    @Override
+    public Task getTask(int id){
+        historyManager.add(tasks.get(id));
+        return tasks.get(id);
+    }
+
+    @Override
+    public Epic getEpic(int id){
+        historyManager.add(epics.get(id));
+        return epics.get(id);
+    }
+
+    @Override
+    public Subtask getSubtask(int id){
+        historyManager.add(subtasks.get(id));
+        return subtasks.get(id);
+    }
+
+
     //Создание новых задач
+    @Override
     public Task createTask(Task task) {
         task.setId(getNextTaskId());
         tasks.put(task.getId(), task);
         return task;
     }
 
+    @Override
     public Epic createEpic(Epic epic) {
         epic.setId(getNextEpicId());
         epics.put(epic.getId(), epic);
         return epic;
     }
 
-    public Subtask createSub(Subtask subtask) {
+    @Override
+    public Subtask createSubtask(Subtask subtask) {
         Epic epic = epics.get(subtask.getEpicId());
         subtask.setId(getNextSubtaskId());
         epic.addSubtask(subtask);
@@ -85,6 +119,7 @@ public class TaskManager {
 
 
     //Обновление задач
+    @Override
     public Task updateTask(Task task) {
         if (task.getId() == null) {
             return null;
@@ -94,6 +129,7 @@ public class TaskManager {
         return task;
     }
 
+    @Override
     public Subtask updateSubtask(Subtask subtask) {
         if (subtask.getId() == null) {
             return null;
@@ -110,6 +146,7 @@ public class TaskManager {
         return subtask;
     }
 
+    @Override
     public Epic updateEpic(Epic epic) {
         if (epic.getId() == null) {
             return null;
@@ -121,10 +158,12 @@ public class TaskManager {
 
 
     //Удаление задач
+    @Override
     public boolean deleteTask(int taskId) {
         return tasks.remove(taskId) != null;
     }
 
+    @Override
     public boolean deleteEpic(int epicId){
         List<Subtask> subtaskList = epics.get(epicId).getSubtasksList();
         for (Subtask subtask: subtaskList){
@@ -134,6 +173,7 @@ public class TaskManager {
         return epics.remove(epicId) != null;
     }
 
+    @Override
     public boolean deleteSubtask(int subtaskId){
         Subtask subtask = subtasks.get(subtaskId);
         Epic epic = epics.get(subtask.getEpicId());

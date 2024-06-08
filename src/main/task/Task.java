@@ -1,4 +1,4 @@
-package task;
+package main.task;
 
 public class Task {
     private Integer id;
@@ -50,6 +50,14 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
 
     @Override
     public String toString() {

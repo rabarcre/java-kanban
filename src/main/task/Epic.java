@@ -1,4 +1,4 @@
-package task;
+package main.task;
 
 import java.util.ArrayList;
 import java.util.List;
