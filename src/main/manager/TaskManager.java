@@ -31,7 +31,7 @@ public interface TaskManager {
     Epic updateEpic(Epic epic);
 
     //Удаление задач
-    boolean deleteTask(int taskId);
-    boolean deleteEpic(int epicId);
-    boolean deleteSubtask(int subtaskId);
+    boolean isDeletedTask(int taskId);
+    boolean isDeletedEpic(int epicId);
+    boolean isDeletedSubtask(int subtaskId);
 }

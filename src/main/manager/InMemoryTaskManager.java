@@ -23,7 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
-    public List<Task> getHistory(){
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
@@ -47,19 +47,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     // Просмотр отдельных задач
     @Override
-    public Task getTask(int id){
+    public Task getTask(int id) {
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
-    public Epic getEpic(int id){
+    public Epic getEpic(int id) {
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
-    public Subtask getSubtask(int id){
+    public Subtask getSubtask(int id) {
         historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
@@ -159,14 +159,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Удаление задач
     @Override
-    public boolean deleteTask(int taskId) {
+    public boolean isDeletedTask(int taskId) {
         return tasks.remove(taskId) != null;
     }
 
     @Override
-    public boolean deleteEpic(int epicId){
+    public boolean isDeletedEpic(int epicId) {
         List<Subtask> subtaskList = epics.get(epicId).getSubtasksList();
-        for (Subtask subtask: subtaskList){
+        for (Subtask subtask : subtaskList) {
             int id = subtask.getId();
             subtasks.remove(id);
         }
@@ -174,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public boolean deleteSubtask(int subtaskId){
+    public boolean isDeletedSubtask(int subtaskId) {
         Subtask subtask = subtasks.get(subtaskId);
         Epic epic = epics.get(subtask.getEpicId());
         List<Subtask> subtaskList = epic.getSubtasksList();

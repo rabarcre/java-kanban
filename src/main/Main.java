@@ -38,7 +38,7 @@ public class Main {
         System.out.println("У обновлённой таски должны быть обновлённыее поля:\n" + taskManager.getTasks() + "\n");
 
         System.out.println("Тест 4: Удаление тасок");
-        boolean isDeleted = taskManager.deleteTask(task3Updated.getId());
+        boolean isDeleted = taskManager.isDeletedTask(task3Updated.getId());
         System.out.println("Удаление прошло успешно: " + isDeleted);
         System.out.println("Удалённая таска должна отсутствовать:\n" + taskManager.getTasks() + "\n");
 
@@ -73,12 +73,12 @@ public class Main {
         System.out.println("Обновлённый сабтаск: " + taskManager.getSubtasks() + "\n");
 
         System.out.println("Тест 11: Удаление сабтаски");
-        isDeleted = taskManager.deleteSubtask(subtask2Updated.getId());
+        isDeleted = taskManager.isDeletedSubtask(subtask2Updated.getId());
         System.out.println("Удаление сабтаски прошло успешно: " + isDeleted);
         System.out.println("Удалённая сабтаска должна отсутствовать: " + taskManager.getSubtasks() + "\n");
 
         System.out.println("Тест 12: Удаление эпика");
-        isDeleted = taskManager.deleteEpic(epic2Updated.getId());
+        isDeleted = taskManager.isDeletedEpic(epic2Updated.getId());
         System.out.println("Удаление эпика прошло успешно: " + isDeleted);
         System.out.println("Удалённый эпик должен отсутствовать: " + taskManager.getEpics() + "\n");
 
@@ -88,7 +88,7 @@ public class Main {
         Subtask subtask3 = new Subtask("Сабтаск3", "Описание Сабтаск3", Status.DONE, epic3Created.getId());
         Subtask subtask3Created = taskManager.createSubtask(subtask3);
         System.out.println("Эпик создан: " + taskManager.getEpics());
-        isDeleted = taskManager.deleteEpic(epic3Created.getId());
+        isDeleted = taskManager.isDeletedEpic(epic3Created.getId());
         System.out.println("Удаление эпика прошло успешно: " + isDeleted);
         System.out.println("Удалённый эпик должен отсутствовать: " + taskManager.getEpics());
         System.out.println("Сабтаска эпика должна отсутствовать: " + taskManager.getSubtasks() + "\n");
