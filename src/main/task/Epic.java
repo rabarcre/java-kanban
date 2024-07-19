@@ -14,7 +14,7 @@ public class Epic extends Task {
         super(id, name, description, status);
     }
 
-    public void addSubtask(Subtask subtask){
+    public void addSubtask(Subtask subtask) {
         subtasksList.add(subtask);
     }
 
@@ -33,7 +33,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{"+
+        return "Epic{" +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

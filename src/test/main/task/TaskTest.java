@@ -16,6 +16,6 @@ class TaskTest {
         Task task2Created = inMemoryTaskManager.createTask(task2);
 
         task1Created.setId(1);
-        assertEquals(task2Created,task1Created, "Таски должны быть равны");
+        assertEquals(task2Created, task1Created, "Таски должны быть равны");
     }
 }

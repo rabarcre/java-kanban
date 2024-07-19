@@ -16,6 +16,6 @@ class EpicTest {
         Epic epic2Created = inMemoryTaskManager.createEpic(epic2);
 
         epic1Created.setId(1);
-        assertEquals(epic2Created,epic1Created, "Эпики должны быть равны");
+        assertEquals(epic2Created, epic1Created, "Эпики должны быть равны");
     }
 }
