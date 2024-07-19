@@ -23,6 +23,11 @@ public class Subtask extends Task {
     }
 
     @Override
+    public String getTaskType() {
+        return "Subtask";
+    }
+
+    @Override
     public String toString() {
         return "Subtask{" +
                 "id=" + getId() +

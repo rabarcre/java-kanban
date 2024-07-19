@@ -22,6 +22,11 @@ public class Epic extends Task {
         return subtasksList;
     }
 
+    @Override
+    public String getTaskType() {
+        return "Epic";
+    }
+
     public void setSubtasksList(List<Subtask> subtasksList) {
         this.subtasksList = subtasksList;
     }

@@ -13,62 +13,60 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     private static InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-    private static List <Task> historyList = inMemoryTaskManager.getHistory();
-
+    private static List<Task> historyList;
 
 
     @Test
-    void historyCheck() {
-        for (int i = 0; i <= 5; i++) {
-            Task task = new Task(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createTask(task);
-            inMemoryTaskManager.getTask(i);
-            Epic epic = new Epic(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createEpic(epic);
-            inMemoryTaskManager.getEpic(i);
-        }
+    void historyAdd() {
+        Task task = new Task(0, "Test1", "desription", Status.NEW);
+        inMemoryTaskManager.createTask(task);
+        inMemoryTaskManager.getTask(0);
+        Epic epic = new Epic(0, "Test1", "desription", Status.NEW);
+        inMemoryTaskManager.createEpic(epic);
+        inMemoryTaskManager.getEpic(0);
+
+        historyList = inMemoryTaskManager.getHistory();
         assertFalse(historyList.isEmpty(), "История не сохраняется");
     }
 
     @Test
-    void maxHistory(){
-        for (int i = 0; i <= 5; i++) {
-            Task task = new Task(i, "Test" + i, "desription", Status.NEW);
+    void maxHistory() {
+        for (int i = 0; i <= 8; i++) {
+            Task task = new Task(i, "Test2", "desription", Status.NEW);
             inMemoryTaskManager.createTask(task);
             inMemoryTaskManager.getTask(i);
-            Epic epic = new Epic(i, "Test" + i, "desription", Status.NEW);
+            Epic epic = new Epic(i, "Test2", "desription", Status.NEW);
             inMemoryTaskManager.createEpic(epic);
             inMemoryTaskManager.getEpic(i);
         }
-        assertTrue(historyList.size() <= 10, "В истории сохранено более 10 тасок");
+        historyList = inMemoryTaskManager.getHistory();
+        assertTrue(historyList.size() >= 10, "В истории сохранено менее 10 тасок");
     }
 
     @Test
-    void lastTask(){
+    void taskAutoDeletion() {
+        Task task = new Task(0, "Test3", "desription", Status.NEW);
+        inMemoryTaskManager.createTask(task);
         for (int i = 0; i <= 5; i++) {
-            Task task = new Task(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createTask(task);
-            inMemoryTaskManager.getTask(i);
-            Epic epic = new Epic(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createEpic(epic);
-            inMemoryTaskManager.getEpic(i);
+            inMemoryTaskManager.getTask(0);
         }
-        Epic testEpicLast = inMemoryTaskManager.getEpic(5);
-        assertEquals(testEpicLast, historyList.get(9), "Последние таски не сохраняются");
+        historyList = inMemoryTaskManager.getHistory();
+        assertEquals(1, historyList.size(), "В истории сохранены повторные обращения к таске");
     }
 
     @Test
-    void firstTask(){
-        for (int i = 0; i <= 5; i++) {
-            Task task = new Task(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createTask(task);
-            inMemoryTaskManager.getTask(i);
-            Epic epic = new Epic(i, "Test" + i, "desription", Status.NEW);
-            inMemoryTaskManager.createEpic(epic);
-            inMemoryTaskManager.getEpic(i);
-        }
-        Epic testEpicFirst = inMemoryTaskManager.getEpic(1);
-        assertEquals(testEpicFirst,historyList.get(0),"Первые таски не удаляются");
+    void taskDeletion() {
+        Task task = new Task(0, "Test4", "desription", Status.NEW);
+        inMemoryTaskManager.createTask(task);
+        inMemoryTaskManager.getTask(0);
+        Epic epic = new Epic(0, "Test4", "desription", Status.NEW);
+        inMemoryTaskManager.createEpic(epic);
+        inMemoryTaskManager.getEpic(0);
+        inMemoryTaskManager.getEpic(0);
+
+        historyList = inMemoryTaskManager.getHistory();
+        assertEquals(2, historyList.size(), "В истории сохранены повторные обращения к таске");
+
     }
 
 }
