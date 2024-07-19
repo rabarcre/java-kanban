@@ -91,7 +91,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
 
             if (node.equals(tail)) {
-                if (node.next != null){
+                if (node.next != null) {
                     tail = node;
                 } else {
                     tail = head;
