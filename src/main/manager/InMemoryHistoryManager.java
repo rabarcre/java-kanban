@@ -50,17 +50,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 }
             }
 
-//            Set<Map.Entry<Integer,Node>> entrySet = nodeMap.entrySet();
-//            for (Map.Entry<Integer, Node> key: entrySet){
-//                if (newNode.equals(key.getValue())){
-//                    removeNode(nodeMap.get(key.getKey()));
-//                }
-//            }
-
-//            if (nodeMap.containsValue(task)) {
-//                removeNode(nodeMap.get(task.getId()));
-//            }
-
             if (head == null) {
                 head = newNode;
                 tail = newNode;
