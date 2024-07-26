@@ -1,7 +1,7 @@
 package main.task;
 
 public class Subtask extends Task {
-    int epicId;
+    private int epicId;
 
 
     public Subtask(String name, String description, Status status, int epicId) {
@@ -23,8 +23,8 @@ public class Subtask extends Task {
     }
 
     @Override
-    public String getTaskType() {
-        return "Subtask";
+    public Enum getTaskType() {
+        return Tasks.Subtask;
     }
 
     @Override

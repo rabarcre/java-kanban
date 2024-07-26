@@ -52,8 +52,8 @@ public class Task {
         this.status = status;
     }
 
-    public String getTaskType() {
-        return "Task";
+    public Enum getTaskType() {
+        return Tasks.Task;
     }
 
     @Override

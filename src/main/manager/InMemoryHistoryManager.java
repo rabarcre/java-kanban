@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    CusLinkedList history = new CusLinkedList();
+    private final CusLinkedList history = new CusLinkedList();
     static int id = 0;
 
     @Override
@@ -28,8 +28,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private static class CusLinkedList {
         private final Map<Integer, Node> nodeMap = new HashMap<>();
-        Node head;
-        Node tail;
+        private Node head;
+        private Node tail;
 
         private void linkLast(Task task) {
             Node newNode = new Node();
