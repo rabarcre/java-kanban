@@ -1,6 +1,5 @@
 package main.task;
 
-import java.util.Objects;
 
 public class Task {
     private Integer id;
@@ -51,6 +50,10 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Enum getTaskType() {
+        return Tasks.Task;
     }
 
     @Override

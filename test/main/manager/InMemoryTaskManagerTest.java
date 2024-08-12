@@ -50,43 +50,43 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewEpic() {
-        Epic epic = new Epic("Test4 epic","description",Status.NEW);
+        Epic epic = new Epic("Test4 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
 
         Epic savedEpic = inMemoryTaskManager.getEpic(epicCreated.getId());
 
         assertNotNull(savedEpic, "Эпик не найден");
-        assertEquals(epicCreated,savedEpic, "Эпики не совпадают");
+        assertEquals(epicCreated, savedEpic, "Эпики не совпадают");
 
         List<Epic> epics = inMemoryTaskManager.getEpics();
-        assertNotNull(epics,"Эпики не возвращаются");
-        assertEquals(1,epics.size(), "Неверное количество эпиков");
-        assertEquals(epicCreated,epics.get(0),"Эпики не совпадают");
+        assertNotNull(epics, "Эпики не возвращаются");
+        assertEquals(1, epics.size(), "Неверное количество эпиков");
+        assertEquals(epicCreated, epics.get(0), "Эпики не совпадают");
     }
 
     @Test
     void addNewSubtask() {
-        Epic epic = new Epic("Test5 epic","description",Status.NEW);
+        Epic epic = new Epic("Test5 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
-        Subtask subtask = new Subtask("Test5 Subtask","description",Status.NEW,epicCreated.getId());
+        Subtask subtask = new Subtask("Test5 Subtask", "description", Status.NEW, epicCreated.getId());
         Subtask subtaskCreated = inMemoryTaskManager.createSubtask(subtask);
 
         Subtask savedSubtask = inMemoryTaskManager.getSubtask(subtaskCreated.getId());
 
-        assertNotNull(savedSubtask,"Сабтаск не найден");
-        assertEquals(subtaskCreated,savedSubtask, "Сабтаски не совпадают");
+        assertNotNull(savedSubtask, "Сабтаск не найден");
+        assertEquals(subtaskCreated, savedSubtask, "Сабтаски не совпадают");
 
         List<Subtask> subtasks = inMemoryTaskManager.getSubtasks();
         assertNotNull(subtasks, "Сабтаски не возвращаются");
-        assertEquals(1,subtasks.size(),"Неверное количество сабтасок");
-        assertEquals(subtaskCreated,subtasks.get(0), "Сабтаски не совпадают");
+        assertEquals(1, subtasks.size(), "Неверное количество сабтасок");
+        assertEquals(subtaskCreated, subtasks.get(0), "Сабтаски не совпадают");
 
         assertNotNull(epicCreated.getSubtasksList(), "Сабтаски не привязаны к эпику");
     }
 
     @Test
-    void updateEpic(){
-        Epic epic = new Epic("Test6 epic","description",Status.NEW);
+    void updateEpic() {
+        Epic epic = new Epic("Test6 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
         Epic updatedEpic = new Epic(epicCreated.getId(), "Updatedepic", "Updated description",
                 Status.DONE);
@@ -95,27 +95,27 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateSubtaskAndEpicStatus(){
-        Epic epic = new Epic("Test7 epic","description",Status.NEW);
+    void updateSubtaskAndEpicStatus() {
+        Epic epic = new Epic("Test7 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
-        Subtask subtask = new Subtask("Test7 Subtask","description",Status.NEW,epicCreated.getId());
+        Subtask subtask = new Subtask("Test7 Subtask", "description", Status.NEW, epicCreated.getId());
         Subtask subtaskCreated = inMemoryTaskManager.createSubtask(subtask);
-        Subtask updatedSubtask = new Subtask(subtaskCreated.getId(),"UpdatedSubtask",
+        Subtask updatedSubtask = new Subtask(subtaskCreated.getId(), "UpdatedSubtask",
                 "UpdatedDescription", Status.DONE, epicCreated.getId());
         inMemoryTaskManager.updateSubtask(updatedSubtask);
 
         Subtask savedSubtask = inMemoryTaskManager.getSubtask(subtaskCreated.getId());
-        assertEquals(savedSubtask,updatedSubtask, "Сабтаск не обновился");
+        assertEquals(savedSubtask, updatedSubtask, "Сабтаск не обновился");
 
         Epic savedEpic = inMemoryTaskManager.getEpic(0);
         assertEquals(savedEpic.getStatus(), savedEpic.getStatus(), "Статус эпика не обновился");
     }
 
     @Test
-    void deleteSubtask(){
-        Epic epic = new Epic("Test8 epic","description",Status.NEW);
+    void deleteSubtask() {
+        Epic epic = new Epic("Test8 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
-        Subtask subtask = new Subtask("Test8 Subtask","description",Status.NEW,epicCreated.getId());
+        Subtask subtask = new Subtask("Test8 Subtask", "description", Status.NEW, epicCreated.getId());
         Subtask subtaskCreated = inMemoryTaskManager.createSubtask(subtask);
 
         assertTrue(inMemoryTaskManager.isDeletedSubtask(subtaskCreated.getId()), "Сабтаска не удалилась");
@@ -123,17 +123,17 @@ class InMemoryTaskManagerTest {
         Epic epicInMemory = inMemoryTaskManager.getEpic(0);
         List<Subtask> emptyList = new ArrayList<>();
         List<Subtask> subtaskList = epicInMemory.getSubtasksList();
-        assertEquals(emptyList,subtaskList, "Сабтаск не удалён из эпика");
+        assertEquals(emptyList, subtaskList, "Сабтаск не удалён из эпика");
     }
 
     @Test
-    void deleteEpicAndLinkedSubtasks(){
-        Epic epic = new Epic("Test9 epic","description",Status.NEW);
+    void deleteEpicAndLinkedSubtasks() {
+        Epic epic = new Epic("Test9 epic", "description", Status.NEW);
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
-        Subtask subtask = new Subtask("Test9 Subtask","description",Status.NEW,epicCreated.getId());
+        Subtask subtask = new Subtask("Test9 Subtask", "description", Status.NEW, epicCreated.getId());
 
         assertTrue(inMemoryTaskManager.isDeletedEpic(epicCreated.getId()), "Эпик не удалился");
         List<Subtask> emptyList = new ArrayList<>();
-        assertEquals(emptyList ,inMemoryTaskManager.getSubtasks(), "Связанные сабтаски не удалились");
+        assertEquals(emptyList, inMemoryTaskManager.getSubtasks(), "Связанные сабтаски не удалились");
     }
 }
