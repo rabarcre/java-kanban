@@ -1,6 +1,6 @@
 package main.task;
 
-public enum Tasks {
+public enum TaskType {
     Task,
     Epic,
     Subtask
