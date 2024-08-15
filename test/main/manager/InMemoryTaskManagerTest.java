@@ -45,7 +45,7 @@ class InMemoryTaskManagerTest {
         Task task = new Task("Test3 task", "Description", Status.NEW);
         Task taskCreated = inMemoryTaskManager.createTask(task);
 
-        assertTrue(inMemoryTaskManager.isDeletedTask(0), "Таска не удалилась");
+        assertEquals(1, inMemoryTaskManager.DeleteTask(0), "Таска не удалилась");
     }
 
     @Test
@@ -118,7 +118,7 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Test8 Subtask", "description", Status.NEW, epicCreated.getId());
         Subtask subtaskCreated = inMemoryTaskManager.createSubtask(subtask);
 
-        assertTrue(inMemoryTaskManager.isDeletedSubtask(subtaskCreated.getId()), "Сабтаска не удалилась");
+        assertEquals(1, inMemoryTaskManager.DeleteSubtask(subtaskCreated.getId()), "Сабтаска не удалилась");
 
         Epic epicInMemory = inMemoryTaskManager.getEpic(0);
         List<Subtask> emptyList = new ArrayList<>();
@@ -132,7 +132,7 @@ class InMemoryTaskManagerTest {
         Epic epicCreated = inMemoryTaskManager.createEpic(epic);
         Subtask subtask = new Subtask("Test9 Subtask", "description", Status.NEW, epicCreated.getId());
 
-        assertTrue(inMemoryTaskManager.isDeletedEpic(epicCreated.getId()), "Эпик не удалился");
+        assertEquals(1, inMemoryTaskManager.DeleteEpic(epicCreated.getId()), "Эпик не удалился");
         List<Subtask> emptyList = new ArrayList<>();
         assertEquals(emptyList, inMemoryTaskManager.getSubtasks(), "Связанные сабтаски не удалились");
     }
