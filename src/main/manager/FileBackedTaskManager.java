@@ -16,8 +16,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    public final static String PATH_TO_FILE = "./src";
-    public final static String FILENAME_CSV = "tasks.csv";
+    public static final String PATH_TO_FILE = "./src";
+    public static final String FILENAME_CSV = "tasks.csv";
     private File file;
 
     public FileBackedTaskManager(File file) {
