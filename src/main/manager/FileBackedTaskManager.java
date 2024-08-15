@@ -68,22 +68,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int DeleteTask(int taskId) {
-        int rtrn = super.DeleteTask(taskId);
+    public int deleteTask(int taskId) {
+        int rtrn = super.deleteTask(taskId);
         save();
         return rtrn;
     }
 
     @Override
-    public int DeleteEpic(int epicId) {
-        int rtrn = super.DeleteEpic(epicId);
+    public int deleteEpic(int epicId) {
+        int rtrn = super.deleteEpic(epicId);
         save();
         return rtrn;
     }
 
     @Override
-    public int DeleteSubtask(int subtaskId) {
-        int rtrn = super.DeleteSubtask(subtaskId);
+    public int deleteSubtask(int subtaskId) {
+        int rtrn = super.deleteSubtask(subtaskId);
         save();
         return rtrn;
     }
