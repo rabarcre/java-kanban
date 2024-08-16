@@ -1,6 +1,9 @@
 package main.manager;
 
-import main.task.*;
+import main.task.Epic;
+import main.task.Status;
+import main.task.Subtask;
+import main.task.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,13 +65,13 @@ class FileBackedTaskManagerTest {
 
         backedTaskManager.loadFromFile();
 
-        assertEquals(1, backedTaskManager.tasks.size(), "Загрузилось неправильное количество тасок");
-        assertEquals(1, backedTaskManager.epics.size(), "Загрузилось неправильное количество эпиков");
-        assertEquals(1, backedTaskManager.subtasks.size(), "Загрузилось неправильное количество сабтасок");
+        assertEquals(1, backedTaskManager.getTasksMap().size(), "Загрузилось неправильное количество тасок");
+        assertEquals(1, backedTaskManager.getEpicsMap().size(), "Загрузилось неправильное количество эпиков");
+        assertEquals(1, backedTaskManager.getSubtasksMap().size(), "Загрузилось неправильное количество сабтасок");
 
-        assertEquals(savedTask, backedTaskManager.tasks.get(0), "Поля тасок до загрузки и после не совпадают");
-        assertEquals(savedEpic, backedTaskManager.epics.get(0), "Поля эпиков до загрузки и после не совпадают");
-        assertEquals(savedSubtask, backedTaskManager.subtasks.get(0), "Поля сабтасок до загрузки и после не совпадают");
+        assertEquals(savedTask, backedTaskManager.getTasksMap().get(0), "Поля тасок до загрузки и после не совпадают");
+        assertEquals(savedEpic, backedTaskManager.getEpicsMap().get(0), "Поля эпиков до загрузки и после не совпадают");
+        assertEquals(savedSubtask, backedTaskManager.getSubtasksMap().get(0), "Поля сабтасок до загрузки и после не совпадают");
     }
 
 }

@@ -3,10 +3,7 @@ package main.formatter;
 import main.task.*;
 
 public class CSVFormatter {
-
-    public static String getHeader() {
-        return "id,type,name,status,description,epicId";
-    }
+    public static final String HEADER = "id,type,name,status,description,epicId";
 
     public static String toString(Task task) {
         StringBuilder sb = new StringBuilder()
@@ -16,7 +13,7 @@ public class CSVFormatter {
                 .append(task.getStatus()).append(",")
                 .append(task.getDescription()).append(",");
 
-        if (task.getTaskType().equals(TaskType.Subtask)) {
+        if (task.getTaskType().equals(TaskType.SUBTASK)) {
             sb.append(",").append(task.getEpicId());
         }
 
@@ -31,9 +28,9 @@ public class CSVFormatter {
         Status status = Status.valueOf(parts[3]);
         String description = parts[4];
 
-        if (type.equals(TaskType.Task)) {
+        if (type.equals(TaskType.TASK)) {
             return new Task(id, name, description, status);
-        } else if (type.equals(TaskType.Subtask)) {
+        } else if (type.equals(TaskType.SUBTASK)) {
             Subtask subtask = new Subtask(name, description, status);
             subtask.setId(id);
             subtask.setEpicId(Integer.parseInt(parts[6]));

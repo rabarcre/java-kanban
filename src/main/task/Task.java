@@ -56,8 +56,8 @@ public class Task {
         return null;
     }
 
-    public Enum getTaskType() {
-        return TaskType.Task;
+    public TaskType getTaskType() {
+        return TaskType.TASK;
     }
 
     @Override

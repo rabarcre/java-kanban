@@ -14,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static main.formatter.CSVFormatter.HEADER;
+
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static final String PATH_TO_FILE = "./src";
@@ -99,7 +101,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Files.createFile(Paths.get(PATH_TO_FILE, FILENAME_CSV));
             }
 
-            bw.write(CSVFormatter.getHeader());
+            bw.write(HEADER);
             bw.newLine();
 
             for (Task task : getTasks()) {
@@ -129,13 +131,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 final int id = task.getId();
 
                 if (task instanceof Subtask subtask) {
-                    subtasks.put(id, subtask);
-                    Epic epic = epics.get(subtask.getEpicId());
+                    getSubtasksMap().put(id, subtask);
+                    Epic epic = getEpicsMap().get(subtask.getEpicId());
                     epic.addSubtask(subtask);
                 } else if (task instanceof Epic epic) {
-                    epics.put(id, epic);
+                    getEpicsMap().put(id, epic);
                 } else {
-                    tasks.put(id, task);
+                    getTasksMap().put(id, task);
                 }
             }
 
