@@ -27,6 +27,19 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
+    //Получение Map задач
+    public Map<Integer, Task> getTasksMap() {
+        return tasks;
+    }
+
+    public Map<Integer, Epic> getEpicsMap() {
+        return epics;
+    }
+
+    public Map<Integer, Subtask> getSubtasksMap() {
+        return subtasks;
+    }
+
 
     // Получение значений задач
     @Override
@@ -159,29 +172,38 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Удаление задач
     @Override
-    public boolean isDeletedTask(int taskId) {
-        return tasks.remove(taskId) != null;
+    public int deleteTask(int taskId) {
+        if (tasks.remove(taskId) != null) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
-    public boolean isDeletedEpic(int epicId) {
+    public int deleteEpic(int epicId) {
         List<Subtask> subtaskList = epics.get(epicId).getSubtasksList();
         for (Subtask subtask : subtaskList) {
             int id = subtask.getId();
             subtasks.remove(id);
         }
-        return epics.remove(epicId) != null;
+        if (epics.remove(epicId) != null) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
-    public boolean isDeletedSubtask(int subtaskId) {
+    public int deleteSubtask(int subtaskId) {
         Subtask subtask = subtasks.get(subtaskId);
         Epic epic = epics.get(subtask.getEpicId());
         List<Subtask> subtaskList = epic.getSubtasksList();
         subtaskList.remove(subtaskId);
         epic.setSubtasksList(subtaskList);
         updateEpic(epic);
-        return subtasks.remove(subtaskId) != null;
+        if (subtasks.remove(subtaskId) != null) {
+            return 1;
+        }
+        return 0;
     }
 
 

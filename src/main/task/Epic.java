@@ -23,8 +23,8 @@ public class Epic extends Task {
     }
 
     @Override
-    public Enum getTaskType() {
-        return Tasks.Epic;
+    public TaskType getTaskType() {
+        return TaskType.EPIC;
     }
 
     public void setSubtasksList(List<Subtask> subtasksList) {

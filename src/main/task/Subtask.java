@@ -3,6 +3,9 @@ package main.task;
 public class Subtask extends Task {
     private int epicId;
 
+    public Subtask(String name, String description, Status status) {
+        super(name, description, status);
+    }
 
     public Subtask(String name, String description, Status status, int epicId) {
         super(name, description, status);
@@ -14,7 +17,8 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public int getEpicId() {
+    @Override
+    public Integer getEpicId() {
         return epicId;
     }
 
@@ -23,8 +27,8 @@ public class Subtask extends Task {
     }
 
     @Override
-    public Enum getTaskType() {
-        return Tasks.Subtask;
+    public TaskType getTaskType() {
+        return TaskType.SUBTASK;
     }
 
     @Override

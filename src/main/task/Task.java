@@ -52,8 +52,12 @@ public class Task {
         this.status = status;
     }
 
-    public Enum getTaskType() {
-        return Tasks.Task;
+    public Integer getEpicId() {
+        return null;
+    }
+
+    public TaskType getTaskType() {
+        return TaskType.TASK;
     }
 
     @Override
