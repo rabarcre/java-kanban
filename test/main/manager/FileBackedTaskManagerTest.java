@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static main.manager.FileBackedTaskManager.PATH_TO_FILE;
 import static main.manager.FileBackedTaskManager.FILENAME_CSV;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileBackedTaskManagerTest {
     private File file;

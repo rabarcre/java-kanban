@@ -1,6 +1,10 @@
 package main.formatter;
 
-import main.task.*;
+import main.task.Epic;
+import main.task.Status;
+import main.task.Subtask;
+import main.task.Task;
+import main.task.TaskType;
 
 public class CSVFormatter {
     public static final String HEADER = "id,type,name,status,description,epicId";
