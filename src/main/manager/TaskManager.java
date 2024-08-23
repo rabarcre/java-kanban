@@ -10,6 +10,8 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
+    List<Task> getPrioritizedTasks();
+
     // Получение значений задач
     List<Task> getTasks();
 
