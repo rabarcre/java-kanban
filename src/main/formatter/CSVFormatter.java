@@ -39,18 +39,21 @@ public class CSVFormatter {
         Duration duration = Duration.parse(parts[5]);
         LocalDateTime localDateTime = LocalDateTime.parse(parts[6]);
 
-        if (type.equals(TaskType.TASK)) {
-            return new Task(id, name, description, status, duration, localDateTime);
-        } else if (type.equals(TaskType.SUBTASK)) {
-            Subtask subtask = new Subtask(name, description, status, duration, localDateTime);
-            subtask.setId(id);
-            subtask.setEpicId(Integer.parseInt(parts[7]));
-            return subtask;
-        } else {
-            Epic epic = new Epic(name, description, status, duration, localDateTime);
-            epic.setId(id);
-            epic.setStatus(status);
-            return epic;
+        switch (type) {
+            default:
+                return null;
+            case TASK:
+                return new Task(id, name, description, status, duration, localDateTime);
+            case SUBTASK:
+                Subtask subtask = new Subtask(name, description, status, duration, localDateTime);
+                subtask.setId(id);
+                subtask.setEpicId(Integer.parseInt(parts[7]));
+                return subtask;
+            case EPIC:
+                Epic epic = new Epic(name, description, status, duration, localDateTime);
+                epic.setId(id);
+                epic.setStatus(status);
+                return epic;
         }
     }
 

@@ -39,7 +39,7 @@ class InMemoryHistoryManagerTest {
             inMemoryTaskManager.getEpic(i);
         }
         historyList = inMemoryTaskManager.getHistory();
-        assertTrue(historyList.size() >= 10, "В истории сохранено менее 10 тасок");
+        assertTrue(historyList.size() >= 10, "В истории сохранено менее 10 тасок:" + historyList.size());
     }
 
     @Test
