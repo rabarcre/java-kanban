@@ -6,6 +6,9 @@ import main.task.Subtask;
 import main.task.Task;
 import main.task.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class CSVFormatter {
     public static final String HEADER = "id,type,name,status,description,epicId";
 
@@ -15,7 +18,9 @@ public class CSVFormatter {
                 .append(task.getTaskType()).append(",")
                 .append(task.getName()).append(",")
                 .append(task.getStatus()).append(",")
-                .append(task.getDescription()).append(",");
+                .append(task.getDescription()).append(",")
+                .append(task.getDuration()).append(",")
+                .append(task.getStartTime());
 
         if (task.getTaskType().equals(TaskType.SUBTASK)) {
             sb.append(",").append(task.getEpicId());
@@ -31,19 +36,24 @@ public class CSVFormatter {
         String name = parts[2];
         Status status = Status.valueOf(parts[3]);
         String description = parts[4];
+        Duration duration = Duration.parse(parts[5]);
+        LocalDateTime localDateTime = LocalDateTime.parse(parts[6]);
 
-        if (type.equals(TaskType.TASK)) {
-            return new Task(id, name, description, status);
-        } else if (type.equals(TaskType.SUBTASK)) {
-            Subtask subtask = new Subtask(name, description, status);
-            subtask.setId(id);
-            subtask.setEpicId(Integer.parseInt(parts[6]));
-            return subtask;
-        } else {
-            Epic epic = new Epic(name, description, status);
-            epic.setId(id);
-            epic.setStatus(status);
-            return epic;
+        switch (type) {
+            default:
+                return null;
+            case TASK:
+                return new Task(id, name, description, status, duration, localDateTime);
+            case SUBTASK:
+                Subtask subtask = new Subtask(name, description, status, duration, localDateTime);
+                subtask.setId(id);
+                subtask.setEpicId(Integer.parseInt(parts[7]));
+                return subtask;
+            case EPIC:
+                Epic epic = new Epic(name, description, status, duration, localDateTime);
+                epic.setId(id);
+                epic.setStatus(status);
+                return epic;
         }
     }
 

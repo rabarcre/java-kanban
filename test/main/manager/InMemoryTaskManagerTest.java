@@ -1,11 +1,14 @@
 package main.manager;
 
+import main.exception.ManagerOverlappingException;
 import main.task.Epic;
 import main.task.Status;
 import main.task.Subtask;
 import main.task.Task;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,5 +138,57 @@ class InMemoryTaskManagerTest {
         assertEquals(1, inMemoryTaskManager.deleteEpic(epicCreated.getId()), "Эпик не удалился");
         List<Subtask> emptyList = new ArrayList<>();
         assertEquals(emptyList, inMemoryTaskManager.getSubtasks(), "Связанные сабтаски не удалились");
+    }
+
+    @Test
+    void startAndEndTimeMustBeDifferent() {
+        Epic epic = new Epic("Test10 epic", "description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 10, 10, 0));
+        Epic epicCreated = inMemoryTaskManager.createEpic(epic);
+        Subtask subtask = new Subtask("Test10 Subtask", "description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 10, 10, 1), epicCreated.getId());
+        Subtask subtaskCreated = inMemoryTaskManager.createSubtask(subtask);
+
+        assertNotEquals(epicCreated.getStartTime(), epicCreated.getEndTime(),
+                "Время за которое выполнился таск одинаковое");
+    }
+
+    @Test
+    void shouldFindOverlappingTasks() {
+        Task task = new Task("Test11 task", "Description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 10, 10, 0));
+        Task taskCreated = inMemoryTaskManager.createTask(task);
+        assertThrows(ManagerOverlappingException.class, () -> {
+            Task taskOverlap = inMemoryTaskManager.createTask(task);
+        }, "Можно создать несколько тасок с одинаковым временем");
+    }
+
+    @Test
+    void shouldReturnFormattedList() {
+        Task task2 = new Task("Test11 task", "Description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 10, 9, 0));
+        Task task3 = new Task("Test11 task", "Description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 10, 12, 0));
+        Task task1 = new Task("Test11 task", "Description", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.of(2020, 12, 9, 10, 0));
+        Task taskCreated2 = inMemoryTaskManager.createTask(task2);
+        Task taskCreated3 = inMemoryTaskManager.createTask(task3);
+        Task taskCreated1 = inMemoryTaskManager.createTask(task1);
+
+        List<Task> sortedList = new ArrayList<>(inMemoryTaskManager.getPrioritizedTasks());
+        Task firstSortedTask = sortedList.get(0);
+        Task secondSortedTask = sortedList.get(1);
+        Task thirdSortedTask = sortedList.get(2);
+
+        assertEquals(taskCreated1, firstSortedTask,
+                "Список неправильно отсортирован, первый элемент должен быть:\n" + taskCreated1
+                        + "\n Первый элемент в данном списке: \n" + firstSortedTask);
+        assertEquals(taskCreated2, secondSortedTask,
+                "Список неправильно отсортирован, второй элемент должен быть:\n" + taskCreated2
+                        + "\n Второй элемент в данном списке: \n" + secondSortedTask);
+        assertEquals(taskCreated3, thirdSortedTask,
+                "Список неправильно отсортирован, третий элемент должен быть:\n" + taskCreated3
+                        + "\n Третий элемент в данном списке: \n" + thirdSortedTask);
+
     }
 }
