@@ -224,8 +224,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление задач
     @Override
     public int deleteTask(int taskId) {
+        Task task = tasks.get(taskId);
         if (tasks.remove(taskId) != null) {
-            prioritizedTasks.remove(tasks.get(taskId));
+            prioritizedTasks.remove(task);
             return 1;
         }
         return 0;
@@ -236,8 +237,8 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> subtaskList = epics.get(epicId).getSubtasksList();
         for (Subtask subtask : subtaskList) {
             int id = subtask.getId();
-            subtasks.remove(id);
             prioritizedTasks.remove(subtasks.get(id));
+            subtasks.remove(id);
         }
         if (epics.remove(epicId) != null) {
             return 1;
