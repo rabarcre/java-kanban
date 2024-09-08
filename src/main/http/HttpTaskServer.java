@@ -2,7 +2,6 @@ package main.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
 import com.sun.net.httpserver.HttpServer;
 import main.http.adapter.DurationAdapter;
 import main.http.adapter.LocalDateTimeAdapter;
@@ -14,7 +13,6 @@ import main.http.handler.TaskHttpHandler;
 import main.manager.Managers;
 import main.manager.TaskManager;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -24,11 +22,9 @@ public class HttpTaskServer {
     public static final int PORT = 8080;
 
     private final HttpServer httpServer;
-    private final TaskManager taskManager;
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
-        this.taskManager = taskManager;
         httpServer.createContext("/tasks", new TaskHttpHandler(taskManager));
         httpServer.createContext("/subtasks", new SubtaskHandler(taskManager));
         httpServer.createContext("/epics", new EpicHandler(taskManager));

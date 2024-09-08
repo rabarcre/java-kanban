@@ -1,7 +1,6 @@
 package main.http.handler;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import main.exception.ManagerOverlappingException;
 import main.http.HttpTaskServer;
 import main.manager.TaskManager;
