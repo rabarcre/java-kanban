@@ -18,12 +18,8 @@ public class PrioritizedTasksHandler extends BaseHttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equals("GET")) {
-            try {
-                String prioritizedList = HttpTaskServer.getGson().toJson(taskManager.getPrioritizedTasks());
-                sendText(exchange, prioritizedList, 200);
-            } catch (Exception exception) {
-                sendInternalServerError(exchange);
-            }
+            String prioritizedList = HttpTaskServer.getGson().toJson(taskManager.getPrioritizedTasks());
+            sendText(exchange, prioritizedList, 200);
         } else {
             System.out.println("Возможен только GET метод");
             sendInternalServerError(exchange);

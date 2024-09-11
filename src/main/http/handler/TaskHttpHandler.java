@@ -2,6 +2,8 @@ package main.http.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import main.exception.ManagerOverlappingException;
+import main.exception.RequestMethodException;
+import main.exception.TaskExistsException;
 import main.http.HttpTaskServer;
 import main.manager.TaskManager;
 import main.task.Task;
@@ -25,8 +27,6 @@ public class TaskHttpHandler extends BaseHttpHandler {
         Integer id = getIdFromPath(exchange.getRequestURI().getPath());
 
         switch (exchange.getRequestMethod()) {
-            default:
-                throw new RuntimeException();
             case "GET":
                 try {
                     if (id == null) {
@@ -38,13 +38,10 @@ public class TaskHttpHandler extends BaseHttpHandler {
                         String response = HttpTaskServer.getGson().toJson(task);
                         sendText(exchange, response, 200);
                     }
-                } catch (StringIndexOutOfBoundsException | NumberFormatException exception) {
+                } catch (TaskExistsException exception) {
                     sendNotFound(exchange, "Задача не найдена");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
                 }
                 break;
-
             case "POST":
                 InputStream inputStream = exchange.getRequestBody();
                 String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
@@ -59,8 +56,6 @@ public class TaskHttpHandler extends BaseHttpHandler {
                     }
                 } catch (ManagerOverlappingException exception) {
                     sendHasInteractions(exchange, "Введённая задача пересекается с созданной ранее");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
                 }
                 break;
 
@@ -70,12 +65,13 @@ public class TaskHttpHandler extends BaseHttpHandler {
                         taskManager.deleteTask(id);
                         sendText(exchange, "Задача удалена", 200);
                     }
-                } catch (StringIndexOutOfBoundsException | NumberFormatException exception) {
+                } catch (TaskExistsException exception) {
                     sendNotFound(exchange, "Задача не найдена");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
                 }
                 break;
+
+            default:
+                throw new RequestMethodException("Метод " + exchange.getRequestMethod() + " не существует");
         }
     }
 }

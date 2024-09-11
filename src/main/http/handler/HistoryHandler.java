@@ -18,12 +18,8 @@ public class HistoryHandler extends BaseHttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
         if (requestMethod.equals("GET")) {
-            try {
-                String historyList = HttpTaskServer.getGson().toJson(taskManager.getHistory());
-                sendText(exchange, historyList, 200);
-            } catch (Exception exception) {
-                sendInternalServerError(exchange);
-            }
+            String historyList = HttpTaskServer.getGson().toJson(taskManager.getHistory());
+            sendText(exchange, historyList, 200);
         } else {
             System.out.println("Возможен только GET метод");
             sendInternalServerError(exchange);

@@ -1,5 +1,6 @@
 package main.formatter;
 
+import main.exception.TypeExistsException;
 import main.task.Epic;
 import main.task.Status;
 import main.task.Subtask;
@@ -22,8 +23,10 @@ public class CSVFormatter {
                 .append(task.getDuration()).append(",")
                 .append(task.getStartTime());
 
-        if (task.getTaskType().equals(TaskType.SUBTASK)) {
-            sb.append(",").append(task.getEpicId());
+        if (task.getTaskType() != null) {
+            if (task.getTaskType().equals(TaskType.SUBTASK)) {
+                sb.append(",").append(task.getEpicId());
+            }
         }
 
         return sb.toString();
@@ -40,8 +43,6 @@ public class CSVFormatter {
         LocalDateTime localDateTime = LocalDateTime.parse(parts[6]);
 
         switch (type) {
-            default:
-                return null;
             case TASK:
                 return new Task(id, name, description, status, duration, localDateTime);
             case SUBTASK:
@@ -54,6 +55,8 @@ public class CSVFormatter {
                 epic.setId(id);
                 epic.setStatus(status);
                 return epic;
+            default:
+                throw new TypeExistsException("Тип задачи " + type + " не существует");
         }
     }
 

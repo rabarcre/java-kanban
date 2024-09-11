@@ -1,4 +1,4 @@
-package main.http.adapter;
+package main.adapter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -21,7 +21,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
     @Override
     public Duration read(JsonReader jsonReader) throws IOException {
         String string = jsonReader.nextString();
-        if (string.equals("null")) {
+        if (string == null || string.equals("null")) {
             return null;
         }
         return Duration.ofMinutes(Long.parseLong(string));

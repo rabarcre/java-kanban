@@ -2,6 +2,8 @@ package main.http.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import main.exception.ManagerOverlappingException;
+import main.exception.RequestMethodException;
+import main.exception.TaskExistsException;
 import main.http.HttpTaskServer;
 import main.manager.TaskManager;
 import main.task.Subtask;
@@ -25,8 +27,6 @@ public class SubtaskHandler extends BaseHttpHandler {
         Integer id = getIdFromPath(exchange.getRequestURI().getPath());
 
         switch (exchange.getRequestMethod()) {
-            default:
-                throw new RuntimeException();
             case "GET":
                 try {
                     if (id == null) {
@@ -38,29 +38,23 @@ public class SubtaskHandler extends BaseHttpHandler {
                         String response = HttpTaskServer.getGson().toJson(subtask);
                         sendText(exchange, response, 200);
                     }
-                } catch (StringIndexOutOfBoundsException | NumberFormatException exception) {
+                } catch (TaskExistsException exception) {
                     sendNotFound(exchange, "Задача не найдена");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
                 }
                 break;
-
             case "POST":
                 InputStream inputStream = exchange.getRequestBody();
                 String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                 try {
                     Subtask subtask = HttpTaskServer.getGson().fromJson(body, Subtask.class);
+                    taskManager.updateSubtask(subtask);
                     if (id == null) {
-                        taskManager.updateSubtask(subtask);
-                        sendText(exchange, "Эпик создан", 201);
+                        sendText(exchange, "Сабтаск создан", 201);
                     } else {
-                        taskManager.updateSubtask(subtask);
-                        sendText(exchange, "Эпик обновлён", 201);
+                        sendText(exchange, "Сабтаск обновлён", 201);
                     }
                 } catch (ManagerOverlappingException exception) {
                     sendHasInteractions(exchange, "Введённый эпик пересекается с созданным ранее");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
                 }
                 break;
 
@@ -68,14 +62,15 @@ public class SubtaskHandler extends BaseHttpHandler {
                 try {
                     if (id != null) {
                         taskManager.deleteSubtask(id);
-                        sendText(exchange, "Эпик удалён", 200);
+                        sendText(exchange, "Сабтаск удалён", 200);
                     }
-                } catch (StringIndexOutOfBoundsException | NumberFormatException exception) {
-                    sendNotFound(exchange, "Эпик не найден");
-                } catch (Exception exception) {
-                    sendInternalServerError(exchange);
+                } catch (TaskExistsException exception) {
+                    sendNotFound(exchange, "Сабтаск не найден");
                 }
                 break;
+
+            default:
+                throw new RequestMethodException("Метод " + exchange.getRequestMethod() + " не существует");
         }
     }
 }
