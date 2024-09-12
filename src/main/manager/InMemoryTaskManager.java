@@ -1,6 +1,7 @@
 package main.manager;
 
 import main.exception.ManagerOverlappingException;
+import main.exception.TaskExistsException;
 import main.task.Epic;
 import main.task.Status;
 import main.task.Subtask;
@@ -25,7 +26,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public List<Task> getHistory() {
@@ -101,18 +102,27 @@ public class InMemoryTaskManager implements TaskManager {
     // Просмотр отдельных задач
     @Override
     public Task getTask(int id) {
+        if (tasks.get(id) == null) {
+            throw new TaskExistsException("Таски с id:" + id + "не существует");
+        }
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
     @Override
     public Epic getEpic(int id) {
+        if (epics.get(id) == null) {
+            throw new TaskExistsException("Эпика с id:" + id + "не существует");
+        }
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
     public Subtask getSubtask(int id) {
+        if (subtasks.get(id) == null) {
+            throw new TaskExistsException("Сабтаски с id:" + id + "не существует");
+        }
         historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
@@ -224,8 +234,12 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление задач
     @Override
     public int deleteTask(int taskId) {
+        Task task = tasks.get(taskId);
+        if (tasks.get(taskId) == null) {
+            throw new TaskExistsException("Таски с id:" + taskId + "не существует");
+        }
         if (tasks.remove(taskId) != null) {
-            prioritizedTasks.remove(tasks.get(taskId));
+            prioritizedTasks.remove(task);
             return 1;
         }
         return 0;
@@ -233,11 +247,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int deleteEpic(int epicId) {
+        if (epics.get(epicId) == null) {
+            throw new TaskExistsException("Эпика с id:" + epicId + "не существует");
+        }
         List<Subtask> subtaskList = epics.get(epicId).getSubtasksList();
         for (Subtask subtask : subtaskList) {
             int id = subtask.getId();
-            subtasks.remove(id);
             prioritizedTasks.remove(subtasks.get(id));
+            subtasks.remove(id);
         }
         if (epics.remove(epicId) != null) {
             return 1;
@@ -247,6 +264,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int deleteSubtask(int subtaskId) {
+        if (subtasks.get(subtaskId) == null) {
+            throw new TaskExistsException("Сабтаски с id:" + subtaskId + "не существует");
+        }
         Subtask subtask = subtasks.get(subtaskId);
         Epic epic = epics.get(subtask.getEpicId());
         List<Subtask> subtaskList = epic.getSubtasksList();
